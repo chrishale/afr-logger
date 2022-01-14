@@ -2,8 +2,10 @@ import { useState, useEffect, useCallback, useMemo, ChangeEventHandler } from 'r
 import Chart from 'react-apexcharts'
 import ApexCharts, { ApexOptions } from 'apexcharts'
 import AFRStream from './AFRStream'
-import useAFRStore, { RESOLUTION } from '../stores/afr'
+import useAFRStore, { RESOLUTION } from '../../stores/afr'
 import shallow from 'zustand/shallow'
+import { Button } from '@mui/material'
+import { Cable } from '@mui/icons-material'
 
 const DEFAULT_RANGE = 100
 
@@ -181,15 +183,15 @@ const AFRChart = () => {
 
   return (
     <div>
-      <h1>{formattedLatestAFR}</h1>
-      <button disabled={Boolean(connectedPort)} onClick={handlePortRequest}>{connectedPort ? "Connected" : "Connect"}</button>
+      <h1>AFR: {formattedLatestAFR}</h1>
+      <Button disabled={Boolean(connectedPort)} variant="contained" endIcon={<Cable />} onClick={handlePortRequest}>{connectedPort ? "Connected" : "Connect"}</Button>
       <Chart {...{ options, series }} type="line" height={600} />
       {Boolean(connectedPort) && (
         <div>
           <nav>
-            <button onClick={handleToggleRunningPress}>{running ? 'Stop' : 'Start'}</button>
-            <button onClick={handleKeyframePress} disabled={!running}>Split</button>
-            <button onClick={handleClearPress}>Clear</button>
+            <Button onClick={handleToggleRunningPress}>{running ? 'Stop' : 'Start'}</Button>
+            <Button onClick={handleKeyframePress} disabled={!running}>Split</Button>
+            <Button onClick={handleClearPress}>Clear</Button>
           </nav>
 
           {/* <hr />

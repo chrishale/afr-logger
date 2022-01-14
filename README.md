@@ -20,3 +20,4 @@ A web application that logs and plots AFR values from a serial enabled wideband 
 [] Export as CSV
 [] Ability to recall, or replay graph in realtime
 [] Plot other metrics along side AFR, like RPM, and intake vaccum
+[] Configurable annotations for y-axis
