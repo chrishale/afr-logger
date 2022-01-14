@@ -1,34 +1,22 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AFR Logger
 
-## Getting Started
+A web application that logs and plots AFR values from a serial enabled wideband lambda gauge such as the AEM X-SERIES UEGO GAUGE. Other gauges might work if they follow the same RS232 standard.
 
-First, run the development server:
+## You'll need
+— RS232 complient AFR gauge
+— DB9 to USB cable
+— Latest version of Chrome (other browsers are untested)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Instructions
+— Connect the DB9 end of the cable to your gauge, and the USB end of the cable to your computer
+— Go to: https://afr-logger.chrishale.co.uk/
+— Click connect, and you should see the live AFR value update in realtime
+— Use Start to begin logging, each time you stop/start logging a new series is plotted on the graph. Or you can manually create a new one using the split button.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features I'd like to add
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+[] Make it look nice
+[] Ability to update series name
+[] Export as CSV
+[] Ability to recall, or replay graph in realtime
+[] Plot other metrics along side AFR, like RPM, and intake vaccum
