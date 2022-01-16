@@ -1,8 +1,7 @@
 class AFRStream extends TransformStream<Uint8Array, string> {
   constructor() {
-    const textencoder = new TextEncoder()
     let buffer = Buffer.alloc(0)
-    const delimiter = Buffer.from("\r\n")
+    const delimiter = Buffer.from('\r\n')
     super({
       start() {},
       async transform(chunk, controller) {
@@ -15,7 +14,7 @@ class AFRStream extends TransformStream<Uint8Array, string> {
         }
         buffer = data
       }
-    }) 
+    })
   }
 }
 
