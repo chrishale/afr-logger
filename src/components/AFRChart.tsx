@@ -6,13 +6,7 @@ import {
   PlusOne
 } from '@mui/icons-material'
 import { Box, ButtonGroup, IconButton, Stack } from '@mui/material'
-import {
-  ChangeEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState
-} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Chart from 'react-apexcharts'
 import shallow from 'zustand/shallow'
 
@@ -22,13 +16,8 @@ import AFRStream from './AFRStream'
 
 const DEFAULT_RANGE = 100
 
-const randomAFR = (min = 10, max = 20) => {
-  return parseFloat((Math.random() * (max - min) + min).toFixed(2))
-}
-
 const AFRChart = () => {
   const [connectedPort, setConnectedPort] = useState<SerialPort>()
-  const [editSeriesIndex, setEditSeriesIndex] = useState<number>()
   const [latestAFR, updateAFR] = useAFRStore(
     s => [s.latestAFR, s.updateAFR],
     shallow
@@ -44,11 +33,6 @@ const AFRChart = () => {
     setIsSupported('serial' in navigator)
   }, [])
 
-  const handleExportRequest = useCallback(() => {
-    console.log({ series })
-    // @TODO - export to CSV
-  }, [series])
-
   const handlePortRequest = useCallback(async () => {
     if (isSupported) {
       const port = await navigator.serial.requestPort()
@@ -63,6 +47,7 @@ const AFRChart = () => {
         const afrStream = new AFRStream()
         port.readable.pipeTo(afrStream.writable)
         const reader = afrStream.readable.getReader()
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const { value, done } = await reader.read()
           if (done) {
@@ -71,7 +56,7 @@ const AFRChart = () => {
           }
           if (value) {
             const afr = parseFloat(value)
-            if (afr !== NaN) {
+            if (!isNaN(afr)) {
               updateAFR(afr)
             }
           }
@@ -100,25 +85,9 @@ const AFRChart = () => {
     split()
   }, [split])
 
-  const handleSeriesSelectionChange: ChangeEventHandler<HTMLSelectElement> =
-    useCallback(e => {
-      if (e.currentTarget.value) {
-        setEditSeriesIndex(parseInt(e.currentTarget.value))
-      } else {
-        setEditSeriesIndex(undefined)
-      }
-    }, [])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      updateAFR(randomAFR(14.1, 14.7))
-    }, 200)
-    return () => clearInterval(interval)
-  }, [updateAFR])
-
   const formattedLatestAFR = useMemo(() => latestAFR.toFixed(2), [latestAFR])
 
-  const [xAxisRange, setXAxisRange] = useState(DEFAULT_RANGE)
+  const [xAxisRange] = useState(DEFAULT_RANGE)
 
   const options = useApexChartOptions(
     useMemo(
@@ -140,6 +109,15 @@ const AFRChart = () => {
     )
   )
 
+  const afrColor = useMemo(() => {
+    if (latestAFR > 14.7) {
+      return 'red'
+    } else if (latestAFR < 12.5) {
+      return 'red'
+    }
+    return 'green'
+  }, [latestAFR])
+
   if (isSupported === false) {
     return <div>Unsupported, sucks to be you.</div>
   }
@@ -149,8 +127,13 @@ const AFRChart = () => {
   }
 
   return (
-    <Box pt={4}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+    <Box py={4} gap={4} height="100vh" display="flex" flexDirection="column">
+      <Stack
+        px={4}
+        height={40}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center">
         <ButtonGroup>
           <IconButton
             color="primary"
@@ -173,10 +156,19 @@ const AFRChart = () => {
             </>
           )}
         </ButtonGroup>
-        {Boolean(connectedPort) && <h1>{formattedLatestAFR}</h1>}
+        {Boolean(connectedPort) && (
+          <Box
+            fontSize={32}
+            display="flex"
+            alignItems="center"
+            color={afrColor}
+            fontFamily="monospace">
+            <span>{formattedLatestAFR}</span>
+          </Box>
+        )}
       </Stack>
-      <Box pt={4}>
-        <Chart {...{ options, series }} type="line" height={600} />
+      <Box height="100%" px={4}>
+        <Chart {...{ options, series }} type="line" height="100%" />
       </Box>
     </Box>
   )
