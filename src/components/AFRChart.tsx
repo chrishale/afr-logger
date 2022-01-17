@@ -1,5 +1,6 @@
 import {
   Cable,
+  Cookie,
   DeleteForever,
   Pause,
   PlayArrow,
@@ -169,6 +170,23 @@ const AFRChart = () => {
       </Stack>
       <Box height="100%" px={4}>
         <Chart {...{ options, series }} type="line" height="100%" />
+      </Box>
+      <Box px={4} textAlign="center">
+        <p>
+          <span
+            style={{
+              display: 'inline-block',
+              verticalAlign: 'middle',
+              paddingRight: '1em'
+            }}>
+            <Cookie />
+          </span>
+          This site uses a few cookies for me to track usage analytics, so that
+          I can see how popular this tool is and if it is worth me spending more
+          time developing and adding features. If you have any issues, questions
+          or suggestions, feel free to{' '}
+          <a href="mailto:hello@chrishale.co.uk">reach out</a>
+        </p>
       </Box>
     </Box>
   )
