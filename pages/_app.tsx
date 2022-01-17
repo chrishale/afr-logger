@@ -18,6 +18,12 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
+declare global {
+  interface Window {
+    gtag: (a: string, b: string, c: unknown) => void
+  }
+}
+
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
